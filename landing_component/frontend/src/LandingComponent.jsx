@@ -8,9 +8,9 @@ import { motion } from "framer-motion";
 import "./styles.css";
 
 const DEFAULT_BULLETS = [
-  "Pipeline StandardScaler ➜ LogisticRegression",
-  "Validation croisée 5-fold (accuracy & F1)",
-  "App Streamlit prête pour la démo",
+  "Visualise les fleurs d'Iris en quelques graphiques clairs",
+  "Comprends comment le modèle apprend grâce à une explication étape par étape",
+  "Teste une prédiction sans connaître le machine learning",
 ];
 
 const DEFAULT_METRICS = [
@@ -22,22 +22,34 @@ const DEFAULT_METRICS = [
 const JOURNEY_STEPS = [
   {
     title: "Explorer",
-    desc: "Notebook matplotlib + stats descriptives inclus pour cadrer le modèle.",
+    desc: "On part du jeu de données Iris et on en tire les grandes tendances visuellement.",
   },
   {
     title: "Valider",
-    desc: "Split 80/20 + CV 5-fold automatisée avec logs détaillés.",
+    desc: "Le modèle est entraîné, contrôlé puis comparé avec des jeux de test séparés.",
   },
   {
-    title: "Déployer",
-    desc: "Streamlit + composant React animé pour les démos clients.",
+    title: "Partager",
+    desc: "L'interface Streamlit permet ensuite d'essayer la solution comme une application web.",
   },
 ];
 
 const STUDIO_FEATURES = [
-  { title: "Notebook 01", badge: "Exploration", desc: "Visualisations + insights pétales & sépales." },
-  { title: "CLI + API", badge: "Ops", desc: "Scripts train / evaluate / infer pour CI/CD." },
-  { title: "App Live", badge: "UX", desc: "Formulaire ergonomique + probabilités par classe." },
+  {
+    title: "Découverte guidée",
+    badge: "Exploration",
+    desc: "Quelques graphiques suffisent pour comprendre comment différencier les espèces.",
+  },
+  {
+    title: "Boutons clés en main",
+    badge: "Actions",
+    desc: "Entraîner, tester ou prédire depuis le terminal sans configuration compliquée.",
+  },
+  {
+    title: "Interface directe",
+    badge: "Démo",
+    desc: "Saisis simplement les mesures et la page affiche l'espèce la plus probable.",
+  },
 ];
 
 class LandingComponent extends StreamlitComponentBase {
@@ -64,8 +76,10 @@ class LandingComponent extends StreamlitComponentBase {
     const args = this.props.args || {};
     const {
       title = "Iris Predictor Studio",
-      subtitle = "Expérimente une pipeline IA complète : exploration, entraînement, évaluation et interface de prédiction.",
-      highlight = "Expérience ML interactive",
+      subtitle =
+        "Même sans notion de data science, on peut suivre le parcours Iris : comprendre les données,"
+        + " observer l'apprentissage puis tester une prédiction en deux clics.",
+      highlight = "Découverte guidée",
       bullets = DEFAULT_BULLETS,
       metrics = DEFAULT_METRICS,
       ctaLabel = "Accéder aux prédictions",
@@ -183,8 +197,8 @@ class LandingComponent extends StreamlitComponentBase {
               <p className="lp-glass-eyebrow">Pipeline Iris</p>
               <h3>Logistic Regression</h3>
               <p className="lp-glass-text">
-                StandardScaler → LogisticRegression (max_iter=1000) avec stratification 5-fold et
-                sauvegarde Joblib.
+                On nettoie les mesures, on standardise les données puis on entraîne une régression
+                logistique fiable pour distinguer les trois espèces.
               </p>
               <div className="lp-chip-row">
                 <span className="lp-chip">Accuracy 97%</span>

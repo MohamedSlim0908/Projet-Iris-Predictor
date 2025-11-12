@@ -7,6 +7,7 @@ from pathlib import Path
 import joblib
 import numpy as np
 import streamlit as st
+import streamlit.components.v1 as components
 
 ROOT = Path(__file__).resolve().parent.parent
 if str(ROOT) not in sys.path:
@@ -43,6 +44,8 @@ st.set_page_config(page_title="Iris Predictor", page_icon="🌸", layout="wide")
 
 if "show_predictor" not in st.session_state:
     st.session_state.show_predictor = False
+if "scroll_predictor" not in st.session_state:
+    st.session_state.scroll_predictor = False
 
 cta_clicked = iris_landing_component(
     title="Iris Predictor Studio",
@@ -63,13 +66,18 @@ cta_clicked = iris_landing_component(
 
 if cta_clicked:
     st.session_state.show_predictor = True
+    st.session_state.scroll_predictor = True
 
 if not st.session_state.show_predictor:
     st.stop()
 
+st.markdown('<div id="predictor-anchor"></div>', unsafe_allow_html=True)
 st.divider()
 st.header("Atelier de prédiction temps réel")
-st.caption("Saisis des mesures réalistes (0 à 10 cm) et observe la classe prédite en direct.")
+st.caption(
+    "Renseigne la longueur et la largeur des pétales/sépales (entre 0 et 10 cm) pour découvrir "
+    "instantanément l'espèce la plus probable."
+)
 
 cols = st.columns(2)
 user_inputs = []
@@ -96,4 +104,21 @@ if predict_btn:
         }
     )
 else:
-    st.info("Ajuste les curseurs puis clique sur « Prédire » pour lancer le pipeline.")
+    st.info(
+        "Utilise les curseurs ci-dessus puis clique sur « Prédire » pour lancer la simulation sur le "
+        "modèle entraîné."
+    )
+
+if st.session_state.get("scroll_predictor"):
+    st.session_state.scroll_predictor = False
+    components.html(
+        """
+        <script>
+        const anchor = document.getElementById('predictor-anchor');
+        if (anchor) {
+            anchor.scrollIntoView({behavior: 'smooth', block: 'start'});
+        }
+        </script>
+        """,
+        height=0,
+    )
