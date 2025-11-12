@@ -35,6 +35,9 @@ iris-predictor/
 │  └─ infer.py
 ├─ models/
 │  └─ iris_pipeline.joblib (créé après l'entraînement)
+├─ landing_component/
+│  ├─ __init__.py
+│  └─ frontend/ (React + Vite pour la landing animée)
 └─ app/
    └─ streamlit_app.py
 ```
@@ -45,6 +48,7 @@ iris-predictor/
 - `src/evaluate.py` : recharge `iris_pipeline.joblib` et calcule accuracy/F1 moyenne ± écart-type.
 - `src/infer.py` : script CLI (`python src/infer.py 5.1 3.5 1.4 0.2`) qui affiche l'espèce prédite et les probabilités.
 - `app/streamlit_app.py` : 4 champs numériques (0–10 cm) + bouton « Prédire » montrant la classe et les probabilités.
+- `landing_component/` : composant Streamlit personnalisé (React/Vite) pour la page d'accueil animée. Construire via `cd landing_component/frontend && npm install && npm run build`.
 
 ## Notebook d'exploration
 `notebook/01_exploration.ipynb` contient 7 cellules (chargement, statistiques descriptives, 2 visualisations Matplotlib et conclusion) pour valider la séparabilité des espèces.
@@ -83,3 +87,14 @@ $ python src/evaluate.py
 
 ---
 Création d’un modèle de classification complet (scikit-learn + Streamlit) : pipeline, validation 5-fold, sauvegarde du modèle et interface web de prédiction.
+
+## Landing animée (React)
+La page d'accueil de l'application Streamlit repose sur un composant personnalisé (`landing_component/`) construit avec React, Vite, `streamlit-component-lib` et Framer Motion.
+
+Pour modifier ou reconstruire ce composant :
+```bash
+cd landing_component/frontend
+npm install          # première fois uniquement
+npm run build        # régénère landing_component/frontend/dist
+```
+Le dossier `dist/` est versionné afin que Streamlit Cloud puisse consommer directement l'artefact sans étape Node.js supplémentaire. Modifie simplement les sources React puis relance `npm run build` avant de committer.

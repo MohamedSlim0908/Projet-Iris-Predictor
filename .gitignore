@@ -2,3 +2,4 @@
 __pycache__/
 *.ipynb_checkpoints/
 models/*.joblib
+landing_component/frontend/node_modules/

@@ -9,10 +9,13 @@ import numpy as np
 import streamlit as st
 
 ROOT = Path(__file__).resolve().parent.parent
+if str(ROOT) not in sys.path:
+    sys.path.append(str(ROOT))
 SRC_DIR = ROOT / "src"
 if str(SRC_DIR) not in sys.path:
     sys.path.append(str(SRC_DIR))
 
+from landing_component import iris_landing_component  # noqa: E402
 from utils import load_iris_df  # noqa: E402
 
 MODEL_PATH = ROOT / "models" / "iris_pipeline.joblib"
@@ -36,12 +39,37 @@ FEATURE_BOUNDS = {
 
 _, _, TARGET_NAMES = load_iris_df()
 
-st.set_page_config(page_title="Iris Predictor", page_icon="🌸")
-st.title("Iris Predictor")
-st.write(
-    "Ce projet entraîne une régression logistique avec normalisation et propose une interface "
-    "pour tester les prédictions sur le dataset Iris."
+st.set_page_config(page_title="Iris Predictor", page_icon="🌸", layout="wide")
+
+if "show_predictor" not in st.session_state:
+    st.session_state.show_predictor = False
+
+cta_clicked = iris_landing_component(
+    title="Iris Predictor Studio",
+    subtitle="Train, évalue et teste un pipeline Logistic Regression entièrement automatisé sur le dataset Iris.",
+    highlight="Expérience ML interactive",
+    bullets=[
+        "StandardScaler + LogisticRegression(max_iter=1000)",
+        "Validation croisée 5-fold (accuracy & F1-macro)",
+        "Scripts train/evaluate/infer + app Streamlit",
+    ],
+    metrics=[
+        {"label": "Accuracy CV", "value": "0.97 ± 0.02"},
+        {"label": "F1-macro CV", "value": "0.97 ± 0.02"},
+        {"label": "Hold-out", "value": "≈ 0.95 - 1.00"},
+    ],
+    cta_label="Lancer l'atelier de prédiction",
 )
+
+if cta_clicked:
+    st.session_state.show_predictor = True
+
+if not st.session_state.show_predictor:
+    st.stop()
+
+st.divider()
+st.header("Atelier de prédiction temps réel")
+st.caption("Saisis des mesures réalistes (0 à 10 cm) et observe la classe prédite en direct.")
 
 cols = st.columns(2)
 user_inputs = []
@@ -52,7 +80,8 @@ for idx, (feature, (min_val, max_val, default)) in enumerate(FEATURE_BOUNDS.item
         col.number_input(label, min_value=min_val, max_value=max_val, value=default, step=0.1)
     )
 
-if st.button("Prédire"):
+predict_btn = st.button("Prédire", type="primary")
+if predict_btn:
     model = load_model()
     sample = np.array(user_inputs).reshape(1, -1)
     pred_idx = model.predict(sample)[0]
@@ -67,4 +96,4 @@ if st.button("Prédire"):
         }
     )
 else:
-    st.info("Saisissez des mesures réalistes (0-10 cm) puis cliquez sur Prédire.")
+    st.info("Ajuste les curseurs puis clique sur « Prédire » pour lancer le pipeline.")
