@@ -19,6 +19,27 @@ const DEFAULT_METRICS = [
   { label: "Temps d'inférence", value: "< 10 ms" },
 ];
 
+const JOURNEY_STEPS = [
+  {
+    title: "Explorer",
+    desc: "Notebook matplotlib + stats descriptives inclus pour cadrer le modèle.",
+  },
+  {
+    title: "Valider",
+    desc: "Split 80/20 + CV 5-fold automatisée avec logs détaillés.",
+  },
+  {
+    title: "Déployer",
+    desc: "Streamlit + composant React animé pour les démos clients.",
+  },
+];
+
+const STUDIO_FEATURES = [
+  { title: "Notebook 01", badge: "Exploration", desc: "Visualisations + insights pétales & sépales." },
+  { title: "CLI + API", badge: "Ops", desc: "Scripts train / evaluate / infer pour CI/CD." },
+  { title: "App Live", badge: "UX", desc: "Formulaire ergonomique + probabilités par classe." },
+];
+
 class LandingComponent extends StreamlitComponentBase {
   constructor(props) {
     super(props);
@@ -54,6 +75,17 @@ class LandingComponent extends StreamlitComponentBase {
       <div className="lp-root">
         <div className="lp-gradient lp-gradient-one" />
         <div className="lp-gradient lp-gradient-two" />
+        <motion.nav
+          className="lp-nav"
+          initial={{ opacity: 0, y: -12 }}
+          animate={{ opacity: 1, y: 0 }}
+        >
+          <div className="lp-logo">Iris Predictor</div>
+          <div className="lp-nav-badges">
+            <span className="lp-nav-pill">LogReg Pipeline</span>
+            <span className="lp-nav-pill lp-nav-pill--ghost">Streamlit + React</span>
+          </div>
+        </motion.nav>
 
         <div className="lp-shell">
           <motion.div
@@ -97,8 +129,8 @@ class LandingComponent extends StreamlitComponentBase {
 
             <div className="lp-cta-row">
               <motion.button
-                whileHover={{ scale: 1.02 }}
-                whileTap={{ scale: 0.99 }}
+                whileHover={{ scale: 1.03 }}
+                whileTap={{ scale: 0.98 }}
                 className="lp-cta"
                 onClick={this.handleClick}
               >
@@ -141,24 +173,74 @@ class LandingComponent extends StreamlitComponentBase {
             animate={{ opacity: 1, scale: 1 }}
             transition={{ delay: 0.2, duration: 0.6 }}
           >
-            <div className="lp-orbit">
-              <div className="lp-orbit-dot" />
-              <div className="lp-orbit-dot lp-orbit-dot--delay" />
+            <div className="lp-visual-radar">
+              <div className="lp-radar-ring lp-radar-ring--one" />
+              <div className="lp-radar-ring lp-radar-ring--two" />
+              <div className="lp-radar-ring lp-radar-ring--three" />
             </div>
+
             <div className="lp-glass">
               <p className="lp-glass-eyebrow">Pipeline Iris</p>
               <h3>Logistic Regression</h3>
               <p className="lp-glass-text">
-                StandardScaler → LogisticRegression(max_iter=1000) avec stratification 5-fold
+                StandardScaler → LogisticRegression (max_iter=1000) avec stratification 5-fold et
+                sauvegarde Joblib.
               </p>
               <div className="lp-chip-row">
                 <span className="lp-chip">Accuracy 97%</span>
                 <span className="lp-chip">F1-macro 97%</span>
+                <span className="lp-chip">Hold-out 93%</span>
               </div>
             </div>
+
+            <div className="lp-feature-grid">
+              {STUDIO_FEATURES.map((feature, idx) => (
+                <motion.div
+                  key={feature.title}
+                  className="lp-feature-card"
+                  initial={{ opacity: 0, y: 15 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: 0.2 + idx * 0.1 }}
+                >
+                  <span className="lp-feature-badge">{feature.badge}</span>
+                  <h4>{feature.title}</h4>
+                  <p>{feature.desc}</p>
+                </motion.div>
+              ))}
+            </div>
+
             <div className="lp-flow lp-flow-one" />
             <div className="lp-flow lp-flow-two" />
           </motion.div>
+        </div>
+
+        <div className="lp-ribbon">
+          <motion.div
+            className="lp-ribbon-label"
+            initial={{ opacity: 0, x: -20 }}
+            whileInView={{ opacity: 1, x: 0 }}
+            viewport={{ once: true }}
+          >
+            Workflow complet
+          </motion.div>
+          <div className="lp-ribbon-track">
+            {JOURNEY_STEPS.map((step, index) => (
+              <motion.div
+                key={step.title}
+                className="lp-timeline-step"
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                transition={{ delay: index * 0.1 }}
+                viewport={{ once: true }}
+              >
+                <div className="lp-step-index">0{index + 1}</div>
+                <div>
+                  <h5>{step.title}</h5>
+                  <p>{step.desc}</p>
+                </div>
+              </motion.div>
+            ))}
+          </div>
         </div>
       </div>
     );
