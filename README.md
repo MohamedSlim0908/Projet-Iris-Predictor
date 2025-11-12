@@ -56,6 +56,26 @@ Une exécution type de `python src/train.py` fournit :
 
 `python src/evaluate.py` reproduit la CV 5-fold complète sur le dataset entier afin de vérifier la stabilité du pipeline sauvegardé.
 
+### Exemple de sortie
+```text
+$ python src/train.py
+5-fold CV metrics on training split:
+  Accuracy: 0.978 ± 0.015
+  F1-macro: 0.977 ± 0.018
+
+Hold-out test metrics:
+  Accuracy: 1.000
+  F1-macro: 1.000
+
+Model trained on full data and saved to models/iris_pipeline.joblib
+Classes: setosa, versicolor, virginica
+
+$ python src/evaluate.py
+5-fold cross-validation on full dataset using saved pipeline:
+  Accuracy: 0.980 ± 0.014
+  F1-macro: 0.979 ± 0.015
+```
+
 ## Next steps
 1. **GridSearchCV** : affiner `C`, `penalty` et choisir une régularisation `l1`/`l2` hybride.
 2. **Matrice de confusion** : visualiser les rares confusions (versicolor vs virginica).
