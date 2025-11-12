@@ -73,10 +73,14 @@ if not st.session_state.show_predictor:
 
 st.markdown('<div id="predictor-anchor"></div>', unsafe_allow_html=True)
 st.divider()
-st.header("Atelier de prédiction temps réel")
+st.header("Atelier de prédiction facile")
 st.caption(
-    "Renseigne la longueur et la largeur des pétales/sépales (entre 0 et 10 cm) pour découvrir "
-    "instantanément l'espèce la plus probable."
+    "Remplis simplement les longueurs/largeurs (0 à 10 cm). Le modèle se charge du reste et te dit "
+    "quelle fleur d'Iris correspond le mieux."
+)
+st.write(
+    "Chaque champ représente une mesure en centimètres. Pas besoin de connaître le machine learning :"
+    " sélectionne les valeurs observées, puis clique sur « Prédire » pour voir le résultat."
 )
 
 cols = st.columns(2)
@@ -95,8 +99,10 @@ if predict_btn:
     pred_idx = model.predict(sample)[0]
     probabilities = model.predict_proba(sample)[0]
 
-    st.success(f"Espèce prédite : **{TARGET_NAMES[pred_idx]}**")
-    st.write("Probabilités par classe :")
+    st.success(
+        f"Cette fleur ressemble le plus à **{TARGET_NAMES[pred_idx]}** selon le modèle entraîné."
+    )
+    st.write("Confiance par espèce :")
     st.dataframe(
         {
             "Espèce": TARGET_NAMES,
@@ -114,10 +120,13 @@ if st.session_state.get("scroll_predictor"):
     components.html(
         """
         <script>
-        const anchor = document.getElementById('predictor-anchor');
-        if (anchor) {
-            anchor.scrollIntoView({behavior: 'smooth', block: 'start'});
-        }
+        const scrollToPredictor = () => {
+            const anchor = window.parent.document.getElementById('predictor-anchor');
+            if (anchor) {
+                anchor.scrollIntoView({behavior: 'smooth', block: 'start'});
+            }
+        };
+        setTimeout(scrollToPredictor, 100);
         </script>
         """,
         height=0,
