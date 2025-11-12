@@ -1,26 +1,26 @@
 # Iris Predictor
 
-Pipeline complet de classification du dataset Iris alliant entraînement automatisé, scripts d'évaluation/inférence et application Streamlit prête à l'emploi.
+End-to-end Iris classification pipeline featuring automated training, evaluation/inference scripts, an exploratory notebook, and a Streamlit web experience powered by a custom React hero component.
 
-## Aperçu
-- **Dataset** : Iris (scikit-learn), 150 échantillons et 3 classes équilibrées.
-- **Modèle** : `StandardScaler` + `LogisticRegression(max_iter=1000)` empaquetés dans un pipeline scikit-learn.
-- **Validation** : séparation 80/20 + validation croisée stratifiée à 5 plis.
-- **Objectif** : précision comprise entre 95 % et 98 % avec explicabilité totale.
+## Overview
+- **Dataset**: Iris (scikit-learn) with 150 balanced samples over 3 species.
+- **Model**: `StandardScaler` + `LogisticRegression(max_iter=1000)` packed in a scikit-learn pipeline.
+- **Validation**: stratified 80/20 split plus 5-fold cross-validation.
+- **Target accuracy**: 95–98% with transparent metrics.
 
-## Installation & exécution
+## Getting started
 ```bash
 python -m venv .venv
-source .venv/bin/activate  # ou .venv\Scripts\activate sous Windows
+source .venv/bin/activate  # .venv\Scripts\activate on Windows
 pip install -r requirements.txt
 
-python src/train.py        # entraîne et sauvegarde models/iris_pipeline.joblib
-python src/evaluate.py     # relance une CV 5-fold sur le pipeline sauvegardé
-python src/infer.py 5.1 3.5 1.4 0.2  # inférence en CLI
-streamlit run app/streamlit_app.py   # interface web
+python src/train.py        # trains and saves models/iris_pipeline.joblib
+python src/evaluate.py     # reruns a 5-fold CV on the persisted pipeline
+python src/infer.py 5.1 3.5 1.4 0.2  # quick CLI prediction
+streamlit run app/streamlit_app.py   # launches the web app
 ```
 
-## Arborescence
+## Project structure
 ```
 iris-predictor/
 ├─ README.md
@@ -34,33 +34,33 @@ iris-predictor/
 │  ├─ evaluate.py
 │  └─ infer.py
 ├─ models/
-│  └─ iris_pipeline.joblib (créé après l'entraînement)
+│  └─ iris_pipeline.joblib (created after training)
 ├─ landing_component/
 │  ├─ __init__.py
-│  └─ frontend/ (React + Vite pour la landing animée)
+│  └─ frontend/ (React + Vite animated hero)
 └─ app/
    └─ streamlit_app.py
 ```
 
-## Scripts principaux
-- `src/utils.py` : charge et nettoie les données (`load_iris_df`).
-- `src/train.py` : split 80/20, CV 5-fold (accuracy & F1 macro), entraînement final + sauvegarde.
-- `src/evaluate.py` : recharge `iris_pipeline.joblib` et calcule accuracy/F1 moyenne ± écart-type.
-- `src/infer.py` : script CLI (`python src/infer.py 5.1 3.5 1.4 0.2`) qui affiche l'espèce prédite et les probabilités.
-- `app/streamlit_app.py` : 4 champs numériques (0–10 cm) + bouton « Prédire » montrant la classe et les probabilités.
-- `landing_component/` : composant Streamlit personnalisé (React/Vite) pour la page d'accueil animée. Construire via `cd landing_component/frontend && npm install && npm run build`.
+## Key scripts
+- `src/utils.py`: loads and cleans the Iris dataset via `load_iris_df`.
+- `src/train.py`: handles the 80/20 split, 5-fold CV (accuracy + macro F1), full training, and model export.
+- `src/evaluate.py`: reloads `iris_pipeline.joblib` and reports CV mean ± std on accuracy/F1.
+- `src/infer.py`: CLI helper (`python src/infer.py 5.1 3.5 1.4 0.2`) that prints the predicted species and probabilities.
+- `app/streamlit_app.py`: Streamlit UI with an animated landing (custom component) and a friendly prediction form.
+- `landing_component/`: React/Vite project compiled into a Streamlit component. Build via `cd landing_component/frontend && npm install && npm run build`.
 
-## Notebook d'exploration
-`notebook/01_exploration.ipynb` contient 7 cellules (chargement, statistiques descriptives, 2 visualisations Matplotlib et conclusion) pour valider la séparabilité des espèces.
+## Exploration notebook
+`notebook/01_exploration.ipynb` contains 7 cells (loading, descriptive stats, two Matplotlib charts, and a short conclusion) to verify the linear separability of the species.
 
-## Résultats attendus
-Une exécution type de `python src/train.py` fournit :
-- CV 5-fold sur l'entraînement : accuracy ≈ 0.97 ± 0.02, F1-macro ≈ 0.97 ± 0.02.
-- Hold-out 20 % : accuracy/F1 proches de 1.00 grâce à la séparation linéaire des classes.
+## Expected results
+Typical `python src/train.py` output:
+- CV (train split): accuracy ≈ 0.97 ± 0.02, F1-macro ≈ 0.97 ± 0.02.
+- Hold-out 20%: accuracy/F1 close to 1.00 thanks to the linear boundaries.
 
-`python src/evaluate.py` reproduit la CV 5-fold complète sur le dataset entier afin de vérifier la stabilité du pipeline sauvegardé.
+`python src/evaluate.py` reruns the 5-fold CV on the full dataset to confirm the saved pipeline.
 
-### Exemple de sortie
+### Sample console run
 ```text
 $ python src/train.py
 5-fold CV metrics on training split:
@@ -81,20 +81,20 @@ $ python src/evaluate.py
 ```
 
 ## Next steps
-1. **GridSearchCV** : affiner `C`, `penalty` et choisir une régularisation `l1`/`l2` hybride.
-2. **Matrice de confusion** : visualiser les rares confusions (versicolor vs virginica).
-3. **Streamlit Cloud** : déployer `app/streamlit_app.py` avec le modèle empaqueté pour des démos publiques.
+1. **GridSearchCV**: tune `C`, `penalty`, and compare `l1`/`l2` regularization.
+2. **Confusion matrix**: visualize the rare versicolor vs. virginica mix-ups.
+3. **Streamlit Cloud**: deploy `app/streamlit_app.py` (model artifact included) for self-serve demos.
 
 ---
-Création d’un modèle de classification complet (scikit-learn + Streamlit) : pipeline, validation 5-fold, sauvegarde du modèle et interface web de prédiction.
+Full-stack classification demo (scikit-learn + Streamlit): pipeline, 5-fold validation, persisted model, and interactive prediction UI.
 
-## Landing animée (React)
-La page d'accueil de l'application Streamlit repose sur un composant personnalisé (`landing_component/`) construit avec React, Vite, `streamlit-component-lib` et Framer Motion.
+## Animated landing (React)
+The Streamlit landing view relies on a custom component (`landing_component/`) built with React, Vite, `streamlit-component-lib`, and Framer Motion.
 
-Pour modifier ou reconstruire ce composant :
+To edit or rebuild it:
 ```bash
 cd landing_component/frontend
-npm install          # première fois uniquement
-npm run build        # régénère landing_component/frontend/dist
+npm install          # first time only
+npm run build        # regenerates landing_component/frontend/dist
 ```
-Le dossier `dist/` est versionné afin que Streamlit Cloud puisse consommer directement l'artefact sans étape Node.js supplémentaire. Modifie simplement les sources React puis relance `npm run build` avant de committer.
+The `dist/` folder is versioned so Streamlit Cloud can serve the compiled assets without running any Node.js build step. Modify the React sources, run `npm run build`, and commit the updated assets.

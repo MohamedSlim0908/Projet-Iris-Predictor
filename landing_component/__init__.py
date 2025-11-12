@@ -12,8 +12,7 @@ def _get_component_func():
     build_dir = Path(__file__).resolve().parent / "frontend" / "dist"
     if not build_dir.exists():
         raise RuntimeError(
-            "Le composant React n'est pas encore buildé. "
-            "Exécute `cd landing_component/frontend && npm run build`."
+            "React assets are missing. Run `cd landing_component/frontend && npm run build` first."
         )
     return components.declare_component("iris_landing", path=str(build_dir))
 

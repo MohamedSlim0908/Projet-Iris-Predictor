@@ -25,7 +25,7 @@ MODEL_PATH = ROOT / "models" / "iris_pipeline.joblib"
 @st.cache_resource(show_spinner=False)
 def load_model():
     if not MODEL_PATH.exists():
-        st.error("Le modèle n'a pas encore été entraîné. Lancez python src/train.py.")
+        st.error("The model has not been trained yet. Run `python src/train.py` first.")
         st.stop()
     return joblib.load(MODEL_PATH)
 
@@ -49,19 +49,19 @@ if "scroll_predictor" not in st.session_state:
 
 cta_clicked = iris_landing_component(
     title="Iris Predictor Studio",
-    subtitle="Train, évalue et teste un pipeline Logistic Regression entièrement automatisé sur le dataset Iris.",
-    highlight="Expérience ML interactive",
+    subtitle="Train, evaluate, and test a logistic-regression pipeline on the classic Iris dataset — no ML background needed.",
+    highlight="Guided playground",
     bullets=[
-        "StandardScaler + LogisticRegression(max_iter=1000)",
-        "Validation croisée 5-fold (accuracy & F1-macro)",
-        "Scripts train/evaluate/infer + app Streamlit",
+        "See the dataset, the pipeline, and the metrics in one place",
+        "Understand how the model learns before running predictions",
+        "Use the friendly form to try a flower instantly",
     ],
     metrics=[
         {"label": "Accuracy CV", "value": "0.97 ± 0.02"},
         {"label": "F1-macro CV", "value": "0.97 ± 0.02"},
         {"label": "Hold-out", "value": "≈ 0.95 - 1.00"},
     ],
-    cta_label="Lancer l'atelier de prédiction",
+    cta_label="Launch the prediction workshop",
 )
 
 if cta_clicked:
@@ -73,14 +73,13 @@ if not st.session_state.show_predictor:
 
 st.markdown('<div id="predictor-anchor"></div>', unsafe_allow_html=True)
 st.divider()
-st.header("Atelier de prédiction facile")
+st.header("Simple prediction workshop")
 st.caption(
-    "Remplis simplement les longueurs/largeurs (0 à 10 cm). Le modèle se charge du reste et te dit "
-    "quelle fleur d'Iris correspond le mieux."
+    "Enter petal and sepal lengths/widths (0 to 10 cm). The model figures out which Iris species is the best match."
 )
 st.write(
-    "Chaque champ représente une mesure en centimètres. Pas besoin de connaître le machine learning :"
-    " sélectionne les valeurs observées, puis clique sur « Prédire » pour voir le résultat."
+    "Each field expects a measurement in centimeters. Just pick the values you observe, then hit "
+    "“Predict” to see the result and the confidence per species."
 )
 
 cols = st.columns(2)
@@ -92,7 +91,7 @@ for idx, (feature, (min_val, max_val, default)) in enumerate(FEATURE_BOUNDS.item
         col.number_input(label, min_value=min_val, max_value=max_val, value=default, step=0.1)
     )
 
-predict_btn = st.button("Prédire", type="primary")
+predict_btn = st.button("Predict", type="primary")
 if predict_btn:
     model = load_model()
     sample = np.array(user_inputs).reshape(1, -1)
@@ -100,19 +99,18 @@ if predict_btn:
     probabilities = model.predict_proba(sample)[0]
 
     st.success(
-        f"Cette fleur ressemble le plus à **{TARGET_NAMES[pred_idx]}** selon le modèle entraîné."
+        f"The model thinks this flower is most likely **{TARGET_NAMES[pred_idx]}**."
     )
-    st.write("Confiance par espèce :")
+    st.write("Confidence per species:")
     st.dataframe(
         {
-            "Espèce": TARGET_NAMES,
-            "Probabilité": [round(prob, 3) for prob in probabilities],
+            "Species": TARGET_NAMES,
+            "Probability": [round(prob, 3) for prob in probabilities],
         }
     )
 else:
     st.info(
-        "Utilise les curseurs ci-dessus puis clique sur « Prédire » pour lancer la simulation sur le "
-        "modèle entraîné."
+        "Adjust the sliders above and click “Predict” to run the trained model."
     )
 
 if st.session_state.get("scroll_predictor"):

@@ -8,47 +8,47 @@ import { motion } from "framer-motion";
 import "./styles.css";
 
 const DEFAULT_BULLETS = [
-  "Visualise les fleurs d'Iris en quelques graphiques clairs",
-  "Comprends comment le modèle apprend grâce à une explication étape par étape",
-  "Teste une prédiction sans connaître le machine learning",
+  "Glance at the Iris dataset through a couple of easy-to-read charts",
+  "Follow the learning process with a short, step-by-step explanation",
+  "Try a prediction without knowing anything about machine learning",
 ];
 
 const DEFAULT_METRICS = [
   { label: "Accuracy CV", value: "0.97 ± 0.02" },
   { label: "F1-macro CV", value: "0.97 ± 0.02" },
-  { label: "Temps d'inférence", value: "< 10 ms" },
+  { label: "Prediction time", value: "< 10 ms" },
 ];
 
 const JOURNEY_STEPS = [
   {
-    title: "Explorer",
-    desc: "On part du jeu de données Iris et on en tire les grandes tendances visuellement.",
+    title: "Explore",
+    desc: "Start from the Iris dataset and highlight the main trends visually.",
   },
   {
-    title: "Valider",
-    desc: "Le modèle est entraîné, contrôlé puis comparé avec des jeux de test séparés.",
+    title: "Validate",
+    desc: "Train the model, check the metrics, and compare with hold-out samples.",
   },
   {
-    title: "Partager",
-    desc: "L'interface Streamlit permet ensuite d'essayer la solution comme une application web.",
+    title: "Share",
+    desc: "Use the Streamlit interface to demo the solution like a real product.",
   },
 ];
 
 const STUDIO_FEATURES = [
   {
-    title: "Découverte guidée",
-    badge: "Exploration",
-    desc: "Quelques graphiques suffisent pour comprendre comment différencier les espèces.",
+    title: "Guided discovery",
+    badge: "Explore",
+    desc: "A handful of charts is all you need to understand what separates each species.",
   },
   {
-    title: "Boutons clés en main",
-    badge: "Actions",
-    desc: "Entraîner, tester ou prédire depuis le terminal sans configuration compliquée.",
+    title: "One-click actions",
+    badge: "Scripts",
+    desc: "Train, evaluate, or infer from the command line without extra setup.",
   },
   {
-    title: "Interface directe",
-    badge: "Démo",
-    desc: "Saisis simplement les mesures et la page affiche l'espèce la plus probable.",
+    title: "Live interface",
+    badge: "Demo",
+    desc: "Type the measurements and the page returns the most likely Iris species.",
   },
 ];
 
@@ -77,12 +77,12 @@ class LandingComponent extends StreamlitComponentBase {
     const {
       title = "Iris Predictor Studio",
       subtitle =
-        "Même sans notion de data science, on peut suivre le parcours Iris : comprendre les données,"
-        + " observer l'apprentissage puis tester une prédiction en deux clics.",
-      highlight = "Découverte guidée",
+        "Follow the Iris journey even without a data background: understand the data, watch the"
+        + " training process, then try a prediction in two clicks.",
+      highlight = "Guided tour",
       bullets = DEFAULT_BULLETS,
       metrics = DEFAULT_METRICS,
-      ctaLabel = "Accéder aux prédictions",
+      ctaLabel = "Open the prediction form",
     } = args;
 
     return (
@@ -151,7 +151,7 @@ class LandingComponent extends StreamlitComponentBase {
                 {ctaLabel}
               </motion.button>
               <div className="lp-cta-hint">
-                <span>✨</span> Démo instantanée, aucune config requise
+                <span>✨</span> Instant demo — no installation needed
               </div>
             </div>
 
@@ -161,7 +161,7 @@ class LandingComponent extends StreamlitComponentBase {
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
               >
-                Ouverture de l’atelier de prédiction juste en dessous ↓
+                The prediction form is now available just below ↓
               </motion.p>
             )}
 
@@ -197,8 +197,8 @@ class LandingComponent extends StreamlitComponentBase {
               <p className="lp-glass-eyebrow">Pipeline Iris</p>
               <h3>Logistic Regression</h3>
               <p className="lp-glass-text">
-                On nettoie les mesures, on standardise les données puis on entraîne une régression
-                logistique fiable pour distinguer les trois espèces.
+                We clean the measurements, standardize the data, and train a reliable logistic
+                regression to separate the three species.
               </p>
               <div className="lp-chip-row">
                 <span className="lp-chip">Accuracy 97%</span>
@@ -235,7 +235,7 @@ class LandingComponent extends StreamlitComponentBase {
             whileInView={{ opacity: 1, x: 0 }}
             viewport={{ once: true }}
           >
-            Workflow complet
+            Full workflow
           </motion.div>
           <div className="lp-ribbon-track">
             {JOURNEY_STEPS.map((step, index) => (
